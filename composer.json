@@ -1,0 +1,19 @@
+{
+    "name": "studioseptember/laravel-sendgrid",
+    "description": "Use Sendgrid as a mail driver",
+    "type": "library",
+    "require": {
+        "sendgrid/sendgrid": "*"
+    },
+    "authors": [
+        {
+            "name": "Daan Meijer",
+            "email": "daan@studioseptember.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "StudioSeptember\\Sendgrid\\": "src/"
+        }
+    }
+}
