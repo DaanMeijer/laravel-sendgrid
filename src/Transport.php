@@ -59,13 +59,22 @@ class Transport extends \Illuminate\Mail\Transport\Transport {
 				$content = new Content('text/html', $message->getBody());
 				$email = new Mail($from, $message->getSubject(), $to, $content);
 
-				/** @var Response $res */
+				/** @var Sendgrid\Response $res */
 				$res = $this->sendgrid->client->mail()->send()->post($email);
 
 				if(!in_array($res->statusCode(), [200, 201, 202])){
 //					dd($email, $res);
 					throw new \Exception("Invalid response code: " . $res->statusCode());
 				}
+
+				$messageId = null;
+				foreach($res->headers() as $header){
+					if(preg_match('/x-message-id: (.*)$/i', $header, $matches)){
+						$messageId = $matches[1];
+					}
+				}
+
+				self::$lastMessageId = $messageId;
 
 				$this->sendPerformed($message);
 				$success++;
@@ -77,6 +86,12 @@ class Transport extends \Illuminate\Mail\Transport\Transport {
 
 		return $success;
 
+	}
+
+	private static $lastMessageId = null;
+
+	public static function getLastMessageId(){
+		return self::$lastMessageId;
 	}
 
 }
