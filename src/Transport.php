@@ -25,7 +25,7 @@ class Transport extends \Illuminate\Mail\Transport\Transport {
 		$this->sendgrid = new SendGrid($key);
 	}
 
-	public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+	public function send(\Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
 	{
 		$this->beforeSendPerformed($message);
 
